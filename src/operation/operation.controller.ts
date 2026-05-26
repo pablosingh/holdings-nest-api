@@ -7,7 +7,7 @@ export class OperationController {
 
   @Get()
     getAllOperation() {
-      return 'This controller returns all Operation';
+      return this.operationService.getAllOperations();
     }
   
     @Post()

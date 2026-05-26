@@ -11,7 +11,7 @@ export class CriptoService {
   async getAllCryptos() {
     const result = await this.db.query(
     `
-      SELECT * FROM cryptos;
+      SELECT * FROM criptos;
     `
     );
     return result.rows;
@@ -19,7 +19,7 @@ export class CriptoService {
   async findCryptoById(id: number) {
     const result = await this.db.query(
       `
-        SELECT * FROM cryptos WHERE id = $1;
+        SELECT * FROM criptos WHERE id = $1;
       `,
       [id]
     );
@@ -28,7 +28,7 @@ export class CriptoService {
   async createCrypto(cripto: string, price: number, updatePrice: string) {
     const result = await this.db.query(
       `
-        INSERT INTO cryptos (cripto, price, updatePrice) VALUES ($1, $2, $3) RETURNING *;
+        INSERT INTO criptos (cripto, price, updatePrice) VALUES ($1, $2, $3) RETURNING *;
       `,
       [cripto, price, updatePrice]
     );
@@ -37,7 +37,7 @@ export class CriptoService {
   async deleteCrypto(id: number) {
     const result = await this.db.query(
       `
-        DELETE FROM cryptos WHERE id = $1 RETURNING *;
+        DELETE FROM criptos WHERE id = $1 RETURNING *;
       `,
       [id]
     );
@@ -46,7 +46,7 @@ export class CriptoService {
   async updateCrypto(id: number, cripto: string, price: number, updatePrice: string) {
     const result = await this.db.query(
       `
-        UPDATE cryptos SET cripto = $1, price = $2, updatePrice = $3 WHERE id = $4 RETURNING *;
+        UPDATE criptos SET cripto = $1, price = $2, updatePrice = $3 WHERE id = $4 RETURNING *;
       `,
       [cripto, price, updatePrice, id]
     );

@@ -7,7 +7,7 @@ export class CriptoController {
   
   @Get()
   getAllCryptos() {
-    return 'This controller returns all cryptos';
+    return this.criptoService.getAllCryptos();
   }
 
   @Post()

@@ -7,7 +7,7 @@ export class HoldingController {
 
   @Get()
     getAllHolding() {
-      return 'This controller returns all holdings';
+      return this.holdingService.getAllHoldings();
     }
   
     @Post()
