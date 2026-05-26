@@ -8,9 +8,10 @@ import { OperationController } from './operation/operation.controller';
 import { CriptoController } from './cripto/cripto.controller';
 import { OperationService } from './operation/operation.service';
 import { CriptoService } from './cripto/cripto.service';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [HoldingsModule, CriptoModule, OperationModule],
+  imports: [HoldingsModule, CriptoModule, OperationModule, DatabaseModule],
   controllers: [HoldingController, CriptoController, OperationController],
   providers: [HoldingService, CriptoService, OperationService],
 })
