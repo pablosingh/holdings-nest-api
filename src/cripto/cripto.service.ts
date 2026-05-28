@@ -8,7 +8,7 @@ export class CriptoService {
     private readonly db: Pool
   ) {}
 
-  async getAllCryptos() {
+  async getAllCriptos() {
     const result = await this.db.query(
     `
       SELECT * FROM criptos;
@@ -16,7 +16,7 @@ export class CriptoService {
     );
     return result.rows;
   }
-  async findCryptoById(id: number) {
+  async findCriptoById(id: number) {
     const result = await this.db.query(
       `
         SELECT * FROM criptos WHERE id = $1;
@@ -25,8 +25,8 @@ export class CriptoService {
     );
     return result.rows[0];
   }
-  
-  async createCrypto(cripto: string, price: number, updated_price: string) {
+
+  async createCripto(cripto: string, price: number, updated_price: string) {
     const result = await this.db.query(
       `
         INSERT INTO criptos (cripto, price, updated_price) VALUES ($1, $2, $3) RETURNING *;
@@ -35,7 +35,7 @@ export class CriptoService {
     );
     return result.rows[0];
   }
-  async deleteCrypto(id: number) {
+  async deleteCripto(id: number) {
     const result = await this.db.query(
       `
         DELETE FROM criptos WHERE id = $1 RETURNING *;
@@ -44,12 +44,12 @@ export class CriptoService {
     );
     return result.rows[0];
   }
-  async updateCrypto(id: number, cripto: string, price: number, updatePrice: string) {
+  async updateCripto(id: number, cripto: string, price: number, updated_price: string) {
     const result = await this.db.query(
       `
         UPDATE criptos SET cripto = $1, price = $2, updated_price = $3 WHERE id = $4 RETURNING *;
       `,
-      [cripto, price, updatePrice, id]
+      [cripto, price, updated_price, id]
     );
     return result.rows[0];
   }

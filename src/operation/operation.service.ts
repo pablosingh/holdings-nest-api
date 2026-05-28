@@ -34,4 +34,22 @@ export class OperationService {
     );
     return result.rows[0];
   }
+  async deleteOperation(id: number) {
+    const result = await this.db.query(
+      `
+        DELETE FROM operations WHERE id = $1 RETURNING *;
+      `,
+      [id]
+    );
+    return result.rows[0];
+  }
+  async updateOperation(id: number, cripto: string, holdingId: number, date: string, buy: boolean, number: number, price: number, total: number, comment: string, exchange: string) {
+    const result = await this.db.query(
+      `
+        UPDATE operations SET cripto = $2, holdingId = $3, date = $4, buy = $5, number = $6, price = $7, total = $8, comment = $9, exchange = $10 WHERE id = $1 RETURNING *;
+      `,
+      [id, cripto, holdingId, date, buy, number, price, total, comment, exchange]
+    );
+    return result.rows[0];
+  }
 }
