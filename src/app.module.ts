@@ -9,10 +9,13 @@ import { CriptoController } from './cripto/cripto.controller';
 import { OperationService } from './operation/operation.service';
 import { CriptoService } from './cripto/cripto.service';
 import { DatabaseModule } from './database/database.module';
+import { UserModule } from './user/user.module';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
 
 @Module({
-  imports: [HoldingsModule, CriptoModule, OperationModule, DatabaseModule],
-  controllers: [HoldingController, CriptoController, OperationController],
-  providers: [HoldingService, CriptoService, OperationService],
+  imports: [HoldingsModule, CriptoModule, OperationModule, DatabaseModule, UserModule],
+  controllers: [HoldingController, CriptoController, OperationController, UserController],
+  providers: [HoldingService, CriptoService, OperationService, UserService],
 })
 export class AppModule {}
