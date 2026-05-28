@@ -1,27 +1,29 @@
-import { Controller, Get, Post, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body} from '@nestjs/common';
 import { HoldingService } from './holding.service';
 
 @Controller('holding')
 export class HoldingController {
   constructor(private readonly holdingService: HoldingService) {}
 
-  @Get()
-    getAllHolding() {
-      return this.holdingService.getAllHoldings();
+  @Get('all')
+    async getAllHolding() {
+      return await this.holdingService.getAllHoldings();
     }
   
-    @Post()
-    createHolding() {
-      return 'This controller creates a new holding';
+    @Post('create')
+    async createHolding(@Body() body: any) {
+      const { cripto, userId, date, amount, initialPrice, initialTotal } = body;
+      return await this.holdingService.createHolding(cripto, userId, date, amount, initialPrice, initialTotal);
     }
   
-    @Delete()
-    deleteHolding() {
-      return 'This controller deletes a holding';
+    @Delete('delete/:id')
+    async deleteHolding(@Param('id') id: number) {
+      return await this.holdingService.deleteHolding(id);
     }
   
-    @Put()
-    updateHolding() {
-      return 'This controller updates a holding';
+    @Put('update')
+    async updateHolding(@Body() body: any) {
+      const { id, cripto, userId, date, amount, initialPrice, initialTotal } = body;
+      return await this.holdingService.updateHolding(id, cripto, userId, date, amount, initialPrice, initialTotal);
     }
 }

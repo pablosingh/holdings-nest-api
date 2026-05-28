@@ -10,7 +10,7 @@ export const databaseProviders = [
         port: 5432,
         user: 'postgres',
         password: 'Pasto140',
-        database: 'nestdb',
+        database: 'nestdb2',
       });
 
       await pool.connect();
