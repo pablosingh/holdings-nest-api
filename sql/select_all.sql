@@ -13,3 +13,10 @@ LEFT JOIN criptos c
 
 WHERE u.id = 1;
 
+-- ///////////////////////////////////////////////
+
+SELECT * 
+FROM holdings h
+JOIN operations o
+  ON o.holding_id = h.id
+  WHERE h.user_id = 1;

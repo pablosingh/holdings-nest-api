@@ -10,8 +10,26 @@ export class UserService {
     return result.rows;
   }
   async findUserById(id: number) {
+    // const result = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
     const result = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
     return result.rows[0];
+  }
+  async getUserWithInfo(id: number) {
+    const result = await this.db.query(
+      `SELECT *
+        FROM users u
+        JOIN holdings h
+          ON h.user_id = u.id
+        JOIN operations o
+          ON o.holding_id = h.id
+        JOIN criptos c
+          ON c.id = o.cripto_id
+        WHERE u.id = $1;
+      `,
+      [id]
+    );
+    console.log(result.rows);
+    return result.rows;
   }
   async createUser(full_name: string, email: string) {
     const result = await this.db.query(

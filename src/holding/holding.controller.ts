@@ -9,9 +9,13 @@ export class HoldingController {
     async getAllHolding() {
       return await this.holdingService.getAllHoldings();
     }
-  @Get(':id')
+  @Get('byId/id=:id')
   async findHoldingById(@Param('id') id: number) {
     return await this.holdingService.findHoldingById(id);
+  }
+  @Get('byCripto/cripto=:cripto')
+  async findHoldingsByCripto(@Param('cripto') cripto: string) {
+    return await this.holdingService.findHoldingsByCripto(cripto);
   }
   
   @Post('create')
@@ -20,7 +24,7 @@ export class HoldingController {
     return await this.holdingService.createHolding(cripto, userId, date, amount, initialPrice, initialTotal);
   }
   
-  @Delete('delete/:id')
+  @Delete('delete/id=:id')
   async deleteHolding(@Param('id') id: number) {
     return await this.holdingService.deleteHolding(id);
   }

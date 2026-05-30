@@ -9,9 +9,13 @@ export class CriptoController {
   async getAllCryptos() {
     return await this.criptoService.getAllCriptos();
   }
-  @Get(':id')
+  @Get('byId/id=:id')
   async findCriptoById(@Param('id') id: number) {
     return await this.criptoService.findCriptoById(id);
+  }
+  @Get('byCripto/cripto=:cripto')
+  async findCriptoByName(@Param('cripto') cripto: string) {
+    return await this.criptoService.findCriptoByName(cripto);
   }
 
   @Post('create')
@@ -21,7 +25,7 @@ export class CriptoController {
     return await this.criptoService.createCripto(cripto, price, updated_price);
   }
 
-  @Delete('delete/:id')
+  @Delete('delete/id=:id')
   async deleteCrypto(@Param('id') id: any) {
     return await this.criptoService.deleteCripto(id);
   }

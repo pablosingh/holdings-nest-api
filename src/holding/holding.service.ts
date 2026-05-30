@@ -24,6 +24,15 @@ export class HoldingService {
     );
     return result.rows[0];
   }
+  async findHoldingsByCripto(cripto: string) {
+    const result = await this.db.query(
+      `
+        SELECT * FROM holdings WHERE cripto = $1;
+      `,
+      [cripto]
+    );
+    return result.rows;
+  }
   async createHolding(cripto: string, userId: number, date: string, 
     amount: number, initialPrice: number, initialTotal: number) {
     const result = await this.db.query(

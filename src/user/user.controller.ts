@@ -8,16 +8,20 @@ export class UserController {
   async getAllUsers() {
     return await this.userService.getAllUsers();
   }
-  @Get(':id')
+  @Get('byId/id=:id')
   async findUserById(@Param('id') id: number) {
     return await this.userService.findUserById(id);
+  }
+  @Get('info/id=:id')
+  async getUserWithInfo(@Param('id') id: number) {
+    return await this.userService.getUserWithInfo(id);
   }
   @Post('create')
   async createUser(@Body() body: any) {
     const { full_name, email } = body;
     return await this.userService.createUser(full_name, email);
   }
-  @Delete('delete/:id')
+  @Delete('delete/id=:id')
   async deleteUser(@Param('id') id: number) {
     return await this.userService.deleteUser(id);
   }

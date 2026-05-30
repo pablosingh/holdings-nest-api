@@ -25,6 +25,15 @@ export class CriptoService {
     );
     return result.rows[0];
   }
+  async findCriptoByName(cripto: string) {
+    const result = await this.db.query(
+      `
+        SELECT * FROM criptos WHERE cripto = $1;
+      `,
+      [cripto]
+    );
+    return result.rows[0];
+  }
 
   async createCripto(cripto: string, price: number, updated_price: string) {
     const result = await this.db.query(

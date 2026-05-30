@@ -23,6 +23,15 @@ export class OperationService {
     );
     return result.rows[0];
   }
+  async findOperationsByCripto(cripto: string) {
+    const result = await this.db.query(
+      `
+        SELECT * FROM operations WHERE cripto = $1;
+      `,
+      [cripto]
+    );
+    return result.rows;
+  }
   async createOperation(cripto: string, holdingId: number, date: string,
     buy: boolean, number: number, price: number, total: number,
     comment: string, exchange: string) {
