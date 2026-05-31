@@ -15,6 +15,23 @@ export class UserService {
     return result.rows[0];
   }
   async getUserWithInfo(id: number) {
+    const userFound = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
+    if (!userFound.rows[0]) {
+      return 'Usuario no encontrado';
+    }
+    let userHoldings = await this.db.query(
+        `SELECT * FROM holdings WHERE user_id = $1`,
+        [id]
+    );
+    userHoldings.rows?.length == 0 ? userHoldings = [] : userHoldings = userHoldings.rows;
+    // let userOperations = await this.db.query(
+    //   `SELECT * FROM operations WHERE user_id = $1`,
+    //   [id]
+    // );
+    // userOperations.rows?.length == 0 ? userOperations = [] : userOperations = userOperations.rows;
+
+
+
     const result = await this.db.query(
       `SELECT *
         FROM users u

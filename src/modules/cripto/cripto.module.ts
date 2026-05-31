@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CriptoController } from './cripto.controller';
 import { CriptoService } from './cripto.service';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from 'src/modules/database/database.module';
 
 @Module({
   imports: [DatabaseModule],
