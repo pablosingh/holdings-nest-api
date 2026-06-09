@@ -45,12 +45,12 @@ export class HoldingService {
 
 
   async createHolding(toCreate: CreateHoldingDto) {
-    const { cripto, userId, date, amount, initialPrice, initialTotal } = toCreate;
+    const { cripto, user_id, date, amount, initial_price, initial_total } = toCreate;
     const result = await this.db.query(
       `
-        INSERT INTO holdings (cripto, userId, date, amount, initialPrice, initialTotal) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+        INSERT INTO holdings (cripto, user_id, date, amount, initial_price, initial_total) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
       `,
-      [cripto, userId, date, amount, initialPrice, initialTotal]
+      [cripto, user_id, date, amount, initial_price, initial_total]
     );
     return result.rows[0];
   }
@@ -65,12 +65,20 @@ export class HoldingService {
   }
 
   async updateHolding(id: number, toUpdate: UpdateHoldingDto) {
-    const { cripto, userId, date, amount, initialPrice, initialTotal } = toUpdate;
+    const currentHolding = await this.findHoldingById(id);
+    if (!currentHolding) {
+      return null;
+    }
+    const cleanUpdate = Object.fromEntries(Object.entries(toUpdate)
+      .filter(([_, value]) => value !== undefined)
+    );
+    const updatedHolding = { ...currentHolding, ...cleanUpdate };
+    const { cripto, user_id, date, amount, initial_price, initial_total } = updatedHolding;
     const result = await this.db.query(
       `
-        UPDATE holdings SET cripto = $1, userId = $2, date = $3, amount = $4, initialPrice = $5, initialTotal = $6 WHERE id = $7 RETURNING *;
+        UPDATE holdings SET cripto = $1, user_id = $2, date = $3, amount = $4, initial_price = $5, initial_total = $6 WHERE id = $7 RETURNING *;
       `,
-      [cripto, userId, date, amount, initialPrice, initialTotal, id]
+      [cripto, user_id, date, amount, initial_price, initial_total, id]
     );
     return result.rows[0];
   }

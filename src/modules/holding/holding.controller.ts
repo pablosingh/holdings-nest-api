@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Put, Param, Body} from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body, ParseIntPipe} from '@nestjs/common';
 import { HoldingService } from './holding.service';
 import { CreateHoldingDto, UpdateHoldingDto } from './holding.entity';
 
@@ -11,7 +11,7 @@ export class HoldingController {
       return await this.holdingService.getAllHoldings();
     }
   @Get('id=:id')
-  async findHoldingById(@Param('id') id: number) {
+  async findHoldingById(@Param('id', ParseIntPipe) id: number) {
     return await this.holdingService.findHoldingById(id);
   }
   @Get('cripto=:cripto')
@@ -25,12 +25,12 @@ export class HoldingController {
   }
   
   @Delete('delete/id=:id')
-  async deleteHolding(@Param('id') id: number) {
+  async deleteHolding(@Param('id', ParseIntPipe) id: number) {
     return await this.holdingService.deleteHolding(id);
   }
   
   @Put('update/id=:id')
-  async updateHolding(@Param('id') id: number, @Body() toUpdate: UpdateHoldingDto) {
+  async updateHolding(@Param('id', ParseIntPipe) id: number, @Body() toUpdate: UpdateHoldingDto) {
     return await this.holdingService.updateHolding(id, toUpdate);
   }
 }

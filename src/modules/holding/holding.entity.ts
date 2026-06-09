@@ -6,31 +6,31 @@ export class Holding {
   @IsString()
   cripto: string;
   @IsNumber()
-  userId: number;
+  user_id: number;
   @IsString()
   date: string;
   @IsNumber()
   amount: number;
   @IsNumber()
-  initialPrice: number;
+  initial_price: number;
   @IsNumber()
-  initialTotal: number;
+  initial_total: number;
   constructor(
     id: number,
     cripto: string,
-    userId: number,
+    user_id: number,
     date: string,
     amount: number,
-    initialPrice: number,
-    initialTotal: number
+    initial_price: number,
+    initial_total: number
   ) {
     this.id = id;
     this.cripto = cripto;
-    this.userId = userId;
+    this.user_id = user_id;
     this.date = date;
     this.amount = amount;
-    this.initialPrice = initialPrice;
-    this.initialTotal = initialTotal;
+    this.initial_price = initial_price;
+    this.initial_total = initial_total;
   }
 }
 
@@ -38,28 +38,28 @@ export class CreateHoldingDto {
   @IsString()
   cripto: string;
   @IsNumber()
-  userId: number;
+  user_id: number;
   @IsString()
   date: string;
   @IsNumber()
   amount: number;
   @IsNumber()
-  initialPrice: number;
+  initial_price: number;
   @IsNumber()
-  initialTotal: number;
+  initial_total: number;
   constructor(
     cripto: string,
-    userId: number,
+    user_id: number,
     date: string,
     amount: number,
-    initialPrice: number,
-    initialTotal: number) {
+    initial_price: number,
+    initial_total: number) {
     this.cripto = cripto;
-    this.userId = userId;
+    this.user_id = user_id;
     this.date = date;
     this.amount = amount;
-    this.initialPrice = initialPrice;
-    this.initialTotal = initialTotal;
+    this.initial_price = initial_price;
+    this.initial_total = initial_total;
   }
 }
 
@@ -69,7 +69,7 @@ export class UpdateHoldingDto {
   cripto?: string;
   @IsOptional()
   @IsNumber()
-  userId?: number;
+  user_id?: number;
   @IsOptional()
   @IsString()
   date?: string;
@@ -78,23 +78,23 @@ export class UpdateHoldingDto {
   amount?: number;
   @IsOptional()
   @IsNumber()
-  initialPrice?: number;
+  initial_price?: number;
   @IsOptional()
   @IsNumber()
-  initialTotal?: number;
+  initial_total?: number;
   constructor(
     cripto?: string,
-    userId?: number,
+    user_id?: number,
     date?: string,
     amount?: number,
-    initialPrice?: number,
-    initialTotal?: number) {
+    initial_price?: number,
+    initial_total?: number) {
     this.cripto = cripto;
-    this.userId = userId;
+    this.user_id = user_id;
     this.date = date;
     this.amount = amount;
-    this.initialPrice = initialPrice;
-    this.initialTotal = initialTotal;
+    this.initial_price = initial_price;
+    this.initial_total = initial_total;
   }
 }
 
