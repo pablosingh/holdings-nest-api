@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Delete, Put, Param, Body} from '@nestjs/common';
 import { HoldingService } from './holding.service';
+import { CreateHoldingDto, UpdateHoldingDto } from './holding.entity';
 
 @Controller('holding')
 export class HoldingController {
@@ -9,19 +10,18 @@ export class HoldingController {
     async getAllHolding() {
       return await this.holdingService.getAllHoldings();
     }
-  @Get('byId/id=:id')
+  @Get('id=:id')
   async findHoldingById(@Param('id') id: number) {
     return await this.holdingService.findHoldingById(id);
   }
-  @Get('byCripto/cripto=:cripto')
+  @Get('cripto=:cripto')
   async findHoldingsByCripto(@Param('cripto') cripto: string) {
     return await this.holdingService.findHoldingsByCripto(cripto);
   }
   
   @Post('create')
-  async createHolding(@Body() body: any) {
-    const { cripto, userId, date, amount, initialPrice, initialTotal } = body;
-    return await this.holdingService.createHolding(cripto, userId, date, amount, initialPrice, initialTotal);
+  async createHolding(@Body() toCreate: CreateHoldingDto) {
+    return await this.holdingService.createHolding(toCreate);
   }
   
   @Delete('delete/id=:id')
@@ -29,9 +29,8 @@ export class HoldingController {
     return await this.holdingService.deleteHolding(id);
   }
   
-  @Put('update')
-  async updateHolding(@Body() body: any) {
-    const { id, cripto, userId, date, amount, initialPrice, initialTotal } = body;
-    return await this.holdingService.updateHolding(id, cripto, userId, date, amount, initialPrice, initialTotal);
+  @Put('update/id=:id')
+  async updateHolding(@Param('id') id: number, @Body() toUpdate: UpdateHoldingDto) {
+    return await this.holdingService.updateHolding(id, toUpdate);
   }
 }
