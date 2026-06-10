@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Delete, Put, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { OperationService } from './operation.service';
+import { OperationDto } from './operation.entity';
 
 @Controller('operation')
 export class OperationController {
@@ -9,29 +10,28 @@ export class OperationController {
   async getAllOperation() {
     return await this.operationService.getAllOperations();
   }
-  @Get('byId/id=:id')
-  async findOperationById(@Param('id') id: number) {
+  @Get('id=:id')
+  async findOperationById(@Param('id', ParseIntPipe) id: number) {
     return await this.operationService.findOperationById(id);
   }
-  @Get('byCripto/cripto=:cripto')
+  @Get('cripto=:cripto')
   async findOperationsByCripto(@Param('cripto') cripto: string) {
     return await this.operationService.findOperationsByCripto(cripto);
   }
+
   @Post('create')
-  async createOperation(@Body() body: any) {
-    const { cripto, holdingId, date, buy, number, price, total, comment, exchange } = body;
-    return await this.operationService.createOperation(cripto, holdingId, date, buy, number, price, total, comment, exchange);
+  async createOperation(@Body() toCreateOperationDto: OperationDto) {
+    return await this.operationService.createOperation(toCreateOperationDto);
   }
 
   @Delete('delete/id=:id')
-  async deleteOperation(@Param('id') id: number) {
+  async deleteOperation(@Param('id', ParseIntPipe) id: number) {
     return await this.operationService.deleteOperation(id);
   }
   
   
-  @Put('update')
-  async updateOperation(@Body() body: any) {
-    const { id, cripto, holdingId, date, buy, number, price, total, comment, exchange } = body;
-    return await this.operationService.updateOperation(id, cripto, holdingId, date, buy, number, price, total, comment, exchange);
+  @Put('update/id=:id')
+  async updateOperation(@Param('id', ParseIntPipe) id: number, @Body() toUpdate: OperationDto) {
+    return await this.operationService.updateOperation(id, toUpdate);
   }
 }

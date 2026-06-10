@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
+import { OperationDto } from './operation.entity';
 @Injectable()
 export class OperationService {
   constructor(
@@ -32,14 +33,13 @@ export class OperationService {
     );
     return result.rows;
   }
-  async createOperation(cripto: string, holdingId: number, date: string,
-    buy: boolean, number: number, price: number, total: number,
-    comment: string, exchange: string) {
+  async createOperation(createOperationDto: OperationDto) {
+    const { cripto, date, buy, number, price, total, comment, exchange, cripto_id, holding_id } = createOperationDto;
       const result = await this.db.query(
       `
-        INSERT INTO operations (cripto, holdingId, date, buy, number, price, total, comment, exchange) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
+        INSERT INTO operations (cripto, date, buy, number, price, total, comment, exchange, cripto_id, holding_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;
       `,
-      [cripto, holdingId, date, buy, number, price, total, comment, exchange]
+      [ cripto, date, buy, number, price, total, comment, exchange, cripto_id, holding_id]
     );
     return result.rows[0];
   }
@@ -52,12 +52,21 @@ export class OperationService {
     );
     return result.rows[0];
   }
-  async updateOperation(id: number, cripto: string, holdingId: number, date: string, buy: boolean, number: number, price: number, total: number, comment: string, exchange: string) {
+
+  async updateOperation(id: number, toUpdate: OperationDto) {
+    const currentOperation = await this.findOperationById(id);
+    if (!currentOperation) return null;
+
+    const cleanUpdate = Object.fromEntries(Object.entries(toUpdate)
+      .filter(([_, value]) => value !== undefined)
+    );
+    const updatedOperation = { ...currentOperation, ...cleanUpdate };
+    const { cripto, holding_id, cripto_id, date, buy, number, price, total, comment, exchange } = updatedOperation;
     const result = await this.db.query(
       `
-        UPDATE operations SET cripto = $2, holdingId = $3, date = $4, buy = $5, number = $6, price = $7, total = $8, comment = $9, exchange = $10 WHERE id = $1 RETURNING *;
+        UPDATE operations SET cripto = $2, holding_id = $3, cripto_id = $4, date = $5, buy = $6, number = $7, price = $8, total = $9, comment = $10, exchange = $11 WHERE id = $1 RETURNING *;
       `,
-      [id, cripto, holdingId, date, buy, number, price, total, comment, exchange]
+      [id, cripto, holding_id, cripto_id, date, buy, number, price, total, comment, exchange]
     );
     return result.rows[0];
   }

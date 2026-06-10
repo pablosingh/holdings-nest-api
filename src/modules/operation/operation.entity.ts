@@ -1,35 +1,74 @@
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 export class Operation {
-  id: number;
-  cripto: string;
-  holdingId: number;
-  date: string;
-  buy: boolean;
-  number: number;
-  price: number;
-  total: number;
-  comment: string;
-  exchange: string;
-  constructor(
-    id: number,
-    cripto: string,
-    holdingId: number,
-    date: string,
-    buy: boolean,
-    number: number,
-    price: number,
-    total: number,
-    comment: string,
-    exchange: string
-  ) {
-    this.id = id;
-    this.cripto = cripto;
-    this.holdingId = holdingId;
-    this.date = date;
-    this.buy = buy;
-    this.number = number;
-    this.price = price;
-    this.total = total;
-    this.comment = comment;
-    this.exchange = exchange;
-  }
+  @IsNumber()
+  @IsOptional()
+  id!: number;
+  @IsString()
+  cripto!: string;
+  @IsString()
+  date!: string;
+  @IsBoolean()
+  buy!: boolean;
+  @IsNumber()
+  number!: number;
+  @IsNumber()
+  price!: number;
+  @IsNumber()
+  total!: number;
+
+  @IsString()
+  comment!: string;
+  @IsString()
+  exchange!: string;
+
+  @IsNumber()
+  @IsOptional()
+  cripto_id!: number;
+  
+  @IsNumber()
+  @IsOptional()
+  holding_id!: number;
+  
+}
+
+export class OperationDto {
+  @IsString()
+  @IsOptional()
+  cripto?: string;
+
+  @IsString()
+  @IsOptional()
+  date?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  buy?: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  number?: number;
+
+  @IsNumber()
+  @IsOptional()
+  price?: number;
+
+  @IsNumber()
+  @IsOptional()
+  total?: number;
+
+  @IsString()
+  @IsOptional()
+  comment?: string;
+
+  @IsString()
+  @IsOptional()
+  exchange?: string;
+
+  @IsNumber()
+  @IsOptional()
+  cripto_id?: number;
+  
+  @IsNumber()
+  @IsOptional()
+  holding_id?: number;
 }
