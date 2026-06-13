@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Delete, Put, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { CriptoService } from './cripto.service';
+import { Cripto, CriptoDto } from './cripto.entity';
 
 @Controller('cripto')
 export class CriptoController {
@@ -9,30 +10,29 @@ export class CriptoController {
   async getAllCryptos() {
     return await this.criptoService.getAllCriptos();
   }
-  @Get('byId/id=:id')
-  async findCriptoById(@Param('id') id: number) {
+  @Get('/id=:id')
+  async findCriptoById(@Param('id', ParseIntPipe) id: number) {
     return await this.criptoService.findCriptoById(id);
   }
-  @Get('byCripto/cripto=:cripto')
+  @Get('/cripto=:cripto')
   async findCriptoByName(@Param('cripto') cripto: string) {
     return await this.criptoService.findCriptoByName(cripto);
   }
 
   @Post('create')
-  async createCripto(@Body() body: any) {
-    console.log(body);
-    const { cripto, price, updated_price } = body;
+  async createCripto(@Body() toCreate: Cripto) {
+    console.log(toCreate);
+    const { cripto, price, updated_price } = toCreate;
     return await this.criptoService.createCripto(cripto, price, updated_price);
   }
 
   @Delete('delete/id=:id')
-  async deleteCrypto(@Param('id') id: any) {
+  async deleteCrypto(@Param('id', ParseIntPipe) id: number) {
     return await this.criptoService.deleteCripto(id);
   }
 
-  @Put('update')
-  async updateCrypto(@Body() body: any) {
-    const { id, cripto, price, updated_price } = body;
-    return await this.criptoService.updateCripto(id, cripto, price, updated_price);
+  @Put('update/id=:id')
+  async updateCrypto(@Param('id', ParseIntPipe) id: number, @Body() toUpdate: CriptoDto) {
+    return await this.criptoService.updateCripto(id, toUpdate);
   }
 }

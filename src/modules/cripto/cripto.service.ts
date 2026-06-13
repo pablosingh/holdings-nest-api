@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
+import { CriptoDto } from './cripto.entity';
 
 @Injectable()
 export class CriptoService {
@@ -53,7 +54,17 @@ export class CriptoService {
     );
     return result.rows[0];
   }
-  async updateCripto(id: number, cripto: string, price: number, updated_price: string) {
+
+  async updateCripto( id: number, toUpdate: CriptoDto) {
+    const currentCripto = await this.findCriptoById(id);
+    if (!currentCripto) {
+      return null;
+    }
+    const cleanUpdate = Object.fromEntries(Object.entries(toUpdate)
+      .filter(([_, value]) => value !== undefined)
+    );
+    const updatedCripto = { ...currentCripto, ...cleanUpdate };
+    const { cripto, price, updated_price } = updatedCripto;
     const result = await this.db.query(
       `
         UPDATE criptos SET cripto = $1, price = $2, updated_price = $3 WHERE id = $4 RETURNING *;

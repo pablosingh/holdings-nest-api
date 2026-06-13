@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Delete, Put, Param, Body, ParseIntPipe} from '@nestjs/common';
 import { HoldingService } from './holding.service';
-import { CreateHoldingDto, UpdateHoldingDto } from './holding.entity';
+import { HoldingDto } from './holding.entity';
 
 @Controller('holding')
 export class HoldingController {
@@ -20,7 +20,7 @@ export class HoldingController {
   }
   
   @Post('create')
-  async createHolding(@Body() toCreate: CreateHoldingDto) {
+  async createHolding(@Body() toCreate: HoldingDto) {
     return await this.holdingService.createHolding(toCreate);
   }
   
@@ -30,7 +30,7 @@ export class HoldingController {
   }
   
   @Put('update/id=:id')
-  async updateHolding(@Param('id', ParseIntPipe) id: number, @Body() toUpdate: UpdateHoldingDto) {
+  async updateHolding(@Param('id', ParseIntPipe) id: number, @Body() toUpdate: HoldingDto) {
     return await this.holdingService.updateHolding(id, toUpdate);
   }
 }

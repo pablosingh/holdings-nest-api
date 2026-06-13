@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
-import { CreateHoldingDto, UpdateHoldingDto } from './holding.entity';
+import { Holding, HoldingDto } from './holding.entity';
 
 @Injectable()
 export class HoldingService {
@@ -44,7 +44,7 @@ export class HoldingService {
   }
 
 
-  async createHolding(toCreate: CreateHoldingDto) {
+  async createHolding(toCreate: HoldingDto) {
     const { cripto, user_id, date, amount, initial_price, initial_total } = toCreate;
     const result = await this.db.query(
       `
@@ -64,7 +64,7 @@ export class HoldingService {
     return result.rows[0];
   }
 
-  async updateHolding(id: number, toUpdate: UpdateHoldingDto) {
+  async updateHolding(id: number, toUpdate: HoldingDto) {
     const currentHolding = await this.findHoldingById(id);
     if (!currentHolding) {
       return null;

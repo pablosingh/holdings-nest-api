@@ -1,12 +1,29 @@
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 export class Cripto {
-  id: number;
-  cripto: string;
-  price: number;
-  updatedPrice: string;
-  constructor(id: number, cripto: string, price: number, updatedPrice: string) {
-    this.id = id;
-    this.cripto = cripto;
-    this.price = price;
-    this.updatedPrice = updatedPrice;
-  }
+  @IsOptional()
+  @IsNumber()
+  id!: number;
+
+  @IsString()
+  cripto!: string;
+
+  @IsNumber()
+  price!: number;
+
+  @IsString()
+  updated_price!: string; 
+}
+
+export class CriptoDto {
+  @IsOptional()
+  @IsString()
+  cripto?: string;
+
+  @IsOptional()
+  @IsNumber()
+  price?: number;
+
+  @IsOptional()
+  @IsString()
+  updated_price?: string;
 }
