@@ -1,6 +1,5 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 export class Cripto {
-  @IsOptional()
   @IsNumber()
   id!: number;
 

@@ -1,11 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
 import { OperationDto } from './operation.entity';
+import { HoldingService } from '../holding/holding.service';
 @Injectable()
 export class OperationService {
   constructor(
       @Inject('PG')
-      private readonly db: Pool
+      private readonly db: Pool,
+      private readonly holdingService: HoldingService,
     ) {}
   async getAllOperations() {
     const result = await this.db.query(

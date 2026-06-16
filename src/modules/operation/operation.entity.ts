@@ -1,34 +1,37 @@
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 export class Operation {
   @IsNumber()
-  @IsOptional()
   id!: number;
+
   @IsString()
   cripto!: string;
+
   @IsString()
   date!: string;
+
   @IsBoolean()
   buy!: boolean;
+
   @IsNumber()
   number!: number;
+
   @IsNumber()
   price!: number;
+
   @IsNumber()
   total!: number;
 
   @IsString()
   comment!: string;
+
   @IsString()
   exchange!: string;
 
   @IsNumber()
-  @IsOptional()
   cripto_id!: number;
   
   @IsNumber()
-  @IsOptional()
   holding_id!: number;
-  
 }
 
 export class OperationDto {

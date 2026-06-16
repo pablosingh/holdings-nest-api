@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
+import { UserDto } from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -10,45 +11,38 @@ export class UserService {
     return result.rows;
   }
   async findUserById(id: number) {
-    // const result = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
     const result = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
     return result.rows[0];
   }
   async getUserWithInfo(id: number) {
-    const userFound = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
+    let userFound = await this.db.query('SELECT * FROM users WHERE id = $1', [id]);
     if (!userFound.rows[0]) {
       return 'Usuario no encontrado';
     }
+    userFound = userFound.rows[0];
+
     let userHoldings = await this.db.query(
         `SELECT * FROM holdings WHERE user_id = $1`,
         [id]
     );
     userHoldings.rows?.length == 0 ? userHoldings = [] : userHoldings = userHoldings.rows;
-    // let userOperations = await this.db.query(
-    //   `SELECT * FROM operations WHERE user_id = $1`,
-    //   [id]
-    // );
-    // userOperations.rows?.length == 0 ? userOperations = [] : userOperations = userOperations.rows;
 
+    const holdingsWithOperations = await Promise.all(
+      userHoldings.map(async (holding) => {
+        const operations = await this.db.query(
+          `SELECT * FROM operations WHERE holding_id = $1`,
+          [holding.id]
+        );
+        return { ...holding, operations: operations.rows };
+    }));
+    
+    console.log("Holdings con operaciones:");
+    console.log(holdingsWithOperations);
 
-
-    const result = await this.db.query(
-      `SELECT *
-        FROM users u
-        JOIN holdings h
-          ON h.user_id = u.id
-        JOIN operations o
-          ON o.holding_id = h.id
-        JOIN criptos c
-          ON c.id = o.cripto_id
-        WHERE u.id = $1;
-      `,
-      [id]
-    );
-    console.log(result.rows);
-    return result.rows;
+    return { ...userFound, holdings: holdingsWithOperations };
   }
-  async createUser(full_name: string, email: string) {
+  async createUser(toCreate: UserDto) {
+    const { full_name, email } = toCreate;
     const result = await this.db.query(
       'INSERT INTO users (full_name, email) VALUES ($1, $2) RETURNING *',
       [full_name, email]
@@ -59,7 +53,15 @@ export class UserService {
     const result = await this.db.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
     return result.rows[0];
   }
-  async updateUser(id: number, full_name: string, email: string) {
+  async updateUser(id: number, toUpdate: UserDto) {
+    const currentUser = await this.findUserById(id);
+    if (!currentUser) return null;
+
+    const cleanUpdate = Object.fromEntries(Object.entries(toUpdate)
+      .filter(([_, value]) => value !== undefined)
+    );
+    const updatedUser = { ...currentUser, ...cleanUpdate };
+    const { full_name, email } = updatedUser;
     const result = await this.db.query(
       'UPDATE users SET full_name = $1, email = $2 WHERE id = $3 RETURNING *',
       [full_name, email, id]

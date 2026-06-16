@@ -1,10 +1,28 @@
+import { IsNumber, IsOptional, IsString } from "class-validator";
+
 export class User {
-  id: number;
-  full_name: string;
-  email: string;
-  constructor(id: number, full_name: string, email: string) {
-    this.id = id;
-    this.full_name = full_name;
-    this.email = email;
-  }
+  @IsNumber()
+  id!: number;
+
+  @IsString()
+  full_name!: string;
+
+  @IsString()
+  email!: string;
+  
+}
+
+export class UserDto {
+  @IsNumber()
+  @IsOptional()
+  id?: number;
+
+  @IsString()
+  @IsOptional()
+  full_name?: string;
+
+  @IsString()
+  @IsOptional()
+  email?: string;
+  
 }
